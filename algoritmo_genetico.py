@@ -1,128 +1,128 @@
 ﻿import random
 
 individuos = 20
-cromosomas = 9
-generaciones = 3
+cromosomos = 9
+geracoes = 3
 
 #Creando un arreglo de 10 x 10
-poblacion = [[0 for x in range(cromosomas)] for x in range(individuos)]
+populacao = [[0 for x in range(cromosomos)] for x in range(individuos)]
 
-print("POBLACION INICIAL")
+print("populacao INICIAL")
 
-#Llenando la población aleatoriamente
+#gerando população aleatoriamente
 for individuo in range(individuos):
-    for cromosoma in range(cromosomas):
-        poblacion[individuo][cromosoma] = random.randint(0, 1)
+    for cromosomo in range(cromosomos):
+        populacao[individuo][cromosomo] = random.randint(0, 1)
 
 
-#Función para medir aptitud
-def medir_aptitud(poblacion): 
-    aptitud = [0 for i in range(individuos)]
+#Função para medir fitness
+def medir_fitness(populacao): 
+    fitness = [0 for i in range(individuos)]
     valores = ["Signo", 2 ** 5, 2 ** 4, 2 ** 3, 2 ** 2, 2 ** 1, 2 ** 0, 2 ** -1, 2 ** -2]
     print("")
-    print("VALORES PARA SACAR APTITUD")
+    print("VALORES PARA REMOVER FITNESS")
     print(valores)
 
     for individuo in range(individuos):
-        for cromosoma in range(1, cromosomas):
-            aptitud[individuo] += poblacion[individuo][cromosoma] * valores[cromosoma]
-        #Cambiando el signo según valor   
-        if poblacion[individuo][0] == 1:
-            aptitud[individuo] *= -1
+        for cromosomo in range(1, cromosomos):
+            fitness[individuo] += populacao[individuo][cromosomo] * valores[cromosomo]
+        #Alterando o signo de acordo com o valor
+        if populacao[individuo][0] == 1:
+            fitness[individuo] *= -1
 
-    #Imprimiendo valores de aptitud
+    #Imprimindo valores de fitness
     print("")
-    print("APTITUD")
+    print("fitness")
     for individuo in range(individuos):
-        print(str(individuo) + " - [" + ", ".join(str(f) for f in poblacion[individuo]) + "] = " + "{:.9}".format(aptitud[individuo]))
+        print(str(individuo) + " - [" + ", ".join(str(f) for f in populacao[individuo]) + "] = " + "{:.9}".format(fitness[individuo]))
     
-    total_aptitud = 0
+    total_fitness = 0
     for x in range(individuos):
-        total_aptitud += abs(aptitud[x])
-    print("TOTAL APTITUD " + str(total_aptitud))
+        total_fitness += abs(fitness[x])
+    print("TOTAL fitness " + str(total_fitness))
     print("")
-    return aptitud
+    return fitness
 
 
-#Función para realizar torneo
-def torneo(indice_individuo1, indice_individuo2):
-    print("TORNEO")
-    print(str(indice_individuo1) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo1]) + "] = " + "{:.9}".format(aptitud[indice_individuo1]))
-    print(str(indice_individuo2) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo2]) + "] = " + "{:.9}".format(aptitud[indice_individuo2]))
+#Função para realizar torneio
+def torneio(indice_individuo1, indice_individuo2):
+    print("TORNEIO")
+    print(str(indice_individuo1) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo1]) + "] = " + "{:.9}".format(fitness[indice_individuo1]))
+    print(str(indice_individuo2) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo2]) + "] = " + "{:.9}".format(fitness[indice_individuo2]))
 
-    if abs(aptitud[indice_individuo1]) < abs(aptitud[indice_individuo2]):
-        indice_ganador = indice_individuo1
+    if abs(fitness[indice_individuo1]) < abs(fitness[indice_individuo2]):
+        indice_ganhador = indice_individuo1
     else:
-        indice_ganador = indice_individuo2
+        indice_ganhador = indice_individuo2
 
-    print("GANADOR")
-    print(str(indice_ganador) + " - [" + ", ".join(str(f) for f in poblacion[indice_ganador]) + "] = " + "{:.9}".format(aptitud[indice_ganador]))
+    print("ganhador")
+    print(str(indice_ganhador) + " - [" + ", ".join(str(f) for f in populacao[indice_ganhador]) + "] = " + "{:.9}".format(fitness[indice_ganhador]))
     print("")
     
-    return indice_ganador
+    return indice_ganhador
 
 
-#Función de mutación
-def mutacion(indice_individuo):
-    print("MUTACIÓN")
-    print(str(indice_individuo) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo]) + "]")
-    indice_mutado = random.randint(0, cromosomas - 1)
+#Função de mutação
+def mutacao(indice_individuo):
+    print("MUTAÇÃO")
+    print(str(indice_individuo) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo]) + "]")
+    indice_mutado = random.randint(0, cromosomos - 1)
     
-    if poblacion[indice_individuo][indice_mutado] == 0:
-        poblacion[indice_individuo][indice_mutado] = 1
+    if populacao[indice_individuo][indice_mutado] == 0:
+        populacao[indice_individuo][indice_mutado] = 1
     else:
-        poblacion[indice_individuo][indice_mutado] = 0
+        populacao[indice_individuo][indice_mutado] = 0
 
-    print(str(indice_individuo) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo]) + "]")
+    print(str(indice_individuo) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo]) + "]")
     print("")
 
 
-#Función de cruce
-def cruce(indice_individuo1, indice_individuo2):
-    print("CRUCE")
-    print(str(indice_individuo1) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo1]) + "]")
-    print(str(indice_individuo2) + " - [" + ", ".join(str(f) for f in poblacion[indice_individuo2]) + "]")
-    indice_cruce = random.randint(1, cromosomas - 1)
-    print("Índice de cruce " + str(indice_cruce));
+#Função de crossover
+def crossover(indice_individuo1, indice_individuo2):
+    print("crossover")
+    print(str(indice_individuo1) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo1]) + "]")
+    print(str(indice_individuo2) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo2]) + "]")
+    indice_crossover = random.randint(1, cromosomos - 1)
+    print("Índice de crossover " + str(indice_crossover));
     print("Descendencias")
-    descendencia1 = poblacion[indice_individuo1][:indice_cruce] + poblacion[indice_individuo2][indice_cruce:]
+    descendencia1 = populacao[indice_individuo1][:indice_crossover] + populacao[indice_individuo2][indice_crossover:]
     print(descendencia1)
-    descendencia2 = poblacion[indice_individuo2][:indice_cruce] + poblacion[indice_individuo1][indice_cruce:]
+    descendencia2 = populacao[indice_individuo2][:indice_crossover] + populacao[indice_individuo1][indice_crossover:]
     print(descendencia2)
     return descendencia1, descendencia2
 
 
-#Imprime población
-def imprime_poblacion():
+#Imprime população
+def imprime_populacao():
     for individuo in range(individuos):
-        print(str(individuo) + " - [" + ", ".join(str(f) for f in poblacion[individuo]) + "]")
+        print(str(individuo) + " - [" + ", ".join(str(f) for f in populacao[individuo]) + "]")
 
 
-for generacion in range(generaciones):
+for geracao in range(geracoes):
     print("")
-    print("--------- GENERACIÓN " + str(generacion) +" ---------")
-    imprime_poblacion()
-    nueva_generacion = [0 for x in range(individuos)]
+    print("--------- GERAÇÃO " + str(geracao) +" ---------")
+    imprime_populacao()
+    nova_geracao = [0 for x in range(individuos)]
     
-    aptitud = medir_aptitud(poblacion)
+    fitness = medir_fitness(populacao)
 
     for i in range(individuos / 2):
-        individuo_ganador = torneo(i, individuos - 1 -i)
-        nueva_generacion[i] = poblacion[individuo_ganador]
+        individuo_ganhador = torneio(i, individuos - 1 -i)
+        nova_geracao[i] = populacao[individuo_ganhador]
 
-    mutaciones = random.randint(0, individuos / 2)
-    for j in range(mutaciones):
-        mutacion(random.randint(0, mutaciones))
+    mutacaoes = random.randint(0, individuos / 2)
+    for j in range(mutacaoes):
+        mutacao(random.randint(0, mutacaoes))
 
-    indice_hijos = individuos / 2
+    indice_filhos = individuos / 2
     for k in range(0, individuos / 2, 2):
-        nueva_generacion[indice_hijos], nueva_generacion[indice_hijos + 1] = cruce(k, k+1)
-        indice_hijos += 2
+        nova_geracao[indice_filhos], nova_geracao[indice_filhos + 1] = crossover(k, k+1)
+        indice_filhos += 2
         print("")
 
-    poblacion = nueva_generacion
+    populacao = nova_geracao
 
 print("")
-print("------- ÚLTIMA GENERACIÓN -------")
-imprime_poblacion()
-medir_aptitud(poblacion)
+print("------- ÚLTIMA GERAÇÃO -------")
+imprime_populacao()
+medir_fitness(populacao)

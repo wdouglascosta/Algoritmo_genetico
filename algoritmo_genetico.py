@@ -1,5 +1,17 @@
 ﻿import random
 
+#gerando lista de otimizações
+otimizacoes = []
+with open('passes.txt', 'r') as filehandle:
+    for line in filehandle:
+        currentPlace = line[:-1]
+        otimizacoes.append(currentPlace)
+
+subset = random.sample(otimizacoes, 10)
+
+print(subset)
+
+
 individuos = 20
 cromosomos = 9
 geracoes = 3

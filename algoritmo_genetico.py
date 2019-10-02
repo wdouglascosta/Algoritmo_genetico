@@ -4,7 +4,6 @@ individuos = 20
 cromosomos = 9
 geracoes = 3
 
-#Creando un arreglo de 10 x 10
 populacao = [[0 for x in range(cromosomos)] for x in range(individuos)]
 
 print("populacao INICIAL")

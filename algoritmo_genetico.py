@@ -1,4 +1,5 @@
 ﻿import random
+import os
 
 #gerando lista de otimizações
 otimizacoes = []
@@ -38,8 +39,19 @@ for i in populacao:
 #         populacao[individuo][cromosomo] = random.randint(0, 1)
 
 def medir_fitness(populacao): 
-    
-    return fitness
+    cmd = ''
+    for individuo in populacao:
+        ist = ''
+        for i in individuo:
+            ist += i + ' '
+        cmd = 'OPT="' + ist + ' " ./run.sh'
+        print(cmd)
+        
+        os.chdir('../tf')
+        os.system(cmd)
+    # return fitness
+
+medir_fitness(populacao)
 
 
 #Função para medir fitness

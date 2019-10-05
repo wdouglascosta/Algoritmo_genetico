@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+system_info()
+{
+    echo ""
+    echo "*******************************************"
+    echo ""
+    echo "WILLIAM COSTA - RA89239"
+
+    echo "Este programa deve ser executado a partir"
+    echo "de um diretório comum ao run.sh de uma"
+    echo "instância válida do tf"
+    echo ""
+    echo "---------------PARÂMETROS---------------"
+    echo ""
+    echo "    # |      Descrição        | Padrão"
+    echo "   -----------------------------------"
+    echo "   -i | Número de Indivíduos  |   20 "
+    echo "   -g | Número de Gerações    |   3"
+    echo "   -c | Número de Cromossomos¹|   50"
+    echo "   -----------------------------------"
+    echo ""
+    echo "¹ é a quantidade de otimizações que cada"
+    echo "indivíduo contém"
+    echo ""
+    echo "----------Saída----------"
+    echo ""
+    echo "É gerado um arquivo"
+    echo "(algoritmo-genetico.log) que contém o log"
+    echo "referente a execução do programa;"
+    echo "Consta neste documento o melhor indivíduo"
+    echo "encontrado nas iterações"
+    echo ""
+    echo "*******************************************"
+    echo ""
+
+
+} 
+
+while getopts ":i:g:c:" opt; do
+  case $opt in
+    i) IND="$OPTARG"
+    ;;
+    g) GER="$OPTARG"
+    ;;
+    c) CRO="$OPTARG"
+    ;;
+    -h) system_info
+    ;;
+    \?) echo "Invalid option -$OPTARG" >&3
+    ;;
+  esac
+done
+
+[[ -n $IND ]] || IND=20
+[[ -n $GER ]] || GER=3
+[[ -n $CRO ]] || CRO=50
+
+if [[ -n $1 && $1 == -h ]]; then
+
+  system_info
+else
+  python algoritmo_genetico.py $IND $GER $CRO 
+
+fi

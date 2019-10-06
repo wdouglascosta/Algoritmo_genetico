@@ -14,16 +14,8 @@ with open('passes.txt', 'r') as filehandle:
         currentPlace = line[:-1]
         otimizacoes.append(currentPlace)
 
-# arquivo = open('algoritmo-genetico.log', 'w')
-# arquivo.writelines("")
-#
-# arquivo.close()
-
 os.system("rm -f algoritmo-genetico.log")
 os.system("touch algoritmo-genetico.log")
-
-
-
 
 print(otimizacoes)
 print('====================================================')
@@ -38,7 +30,6 @@ cromosomos = int(sys.argv[3])
 tempoMelhorIndividuo = float("inf")
 melhorIndividuo = ''
 
-# populacao = [[0 for x in range(cromosomos)] for x in range(individuos)]
 populacao = []
 print("populacao INICIAL")
 count = 0
@@ -70,24 +61,28 @@ def medir_fitness(populacao):
     cmd = ''
     fitness = [0 for i in range(individuos)]
     indiceFit = 0
+    average = []
     for individuo in populacao:
         
         ist = ''
         for i in individuo:
             ist += i + ' '
         cmd = 'OPT="' + ist + ' " ./run.sh'
-        os.system(cmd)
+        tempos = []
+        for indj in range(3):
+            os.system(cmd)
+            tempos.append(obter_tempo())
+            print(tempos[indj])
+
+        media = sum(tempos) / len(tempos)
         print('========================================================')
-        print(obter_tempo())
+        print(media)
         print('========================================================')
-        fitness[indiceFit] = obter_tempo()
+        fitness[indiceFit] = media
         indiceFit += 1
 
     return fitness
 
-# print(medir_fitness(populacao))
-
-#Função para realizar torneio
 def torneio(indice_individuo1, indice_individuo2):
     print("TORNEIO")
     print(str(indice_individuo1) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo1]) + "] = " + "{:.9}".format(fitness[indice_individuo1]))
@@ -119,18 +114,9 @@ def mutacao(indice_individuo):
         novaOtimizacao = sorteioNovaOtm()
     
     populacao[indice_individuo][indice_mutado] = novaOtimizacao
-    
-    # while populacao[indice_individuo][indice_mutado] == populacao[indice_individuo][indice_mutado + 1]
-
-    
-    # if populacao[indice_individuo][indice_mutado] == populacao[indice_individuo][indice_mutado + 1]:
-    #     populacao[indice_individuo][indice_mutado] = 
-    # else:
-    #     populacao[indice_individuo][indice_mutado] = 0
 
     print(str(indice_individuo) + " - [" + ", ".join(str(f) for f in populacao[indice_individuo]) + "]")
     print("")
-
 
 #Função de crossover
 def crossover(indice_individuo1, indice_individuo2):
@@ -158,17 +144,6 @@ def imprime_arquivo(texto):
 
     arquivo.close()
 
-# def imprime_fitness(tempo):
-#     arquivo = open('algoritmo-genetico-TEMPOS.txt', 'r')
-#     conteudo = arquivo.readlines()
-#     conteudo.append("%f" % tempo)
-#     conteudo.append('\n')
-#
-#     arquivo = open('algoritmo-genetico-TEMPOS.txt', 'w')
-#     arquivo.writelines(conteudo)
-#
-#     arquivo.close()
-
 #Imprime população
 def imprime_populacao(fitness):
     indesc = ''
@@ -177,7 +152,6 @@ def imprime_populacao(fitness):
     for individuo in range(individuos):
         indesc = str(individuo) + " - [" + ", ".join(str(f) for f in populacao[individuo]) + "]"
         temp = "---> Tempo: %f seg." % fitness[individuo]
-        # imprime_fitness(fitness[individuo])
         print(indesc)
         print(temp)
         imprime_arquivo(indesc)
@@ -195,8 +169,6 @@ for geracao in range(geracoes):
     if fitness[indiceMelhorIndividuo] < tempoMelhorIndividuo:
         tempoMelhorIndividuo = fitness[indiceMelhorIndividuo]
         melhorIndividuo = "[" + " ".join(str(f) for f in populacao[indiceMelhorIndividuo]) + "]"
-
-
 
     imprime_populacao(fitness)
     nova_geracao = [0 for x in range(individuos)]
@@ -217,8 +189,6 @@ for geracao in range(geracoes):
         print("")
 
     populacao = nova_geracao
-
-
 
 print("")
 print("------- ÚLTIMA GERAÇÃO -------")
